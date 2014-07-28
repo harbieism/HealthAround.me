@@ -211,6 +211,7 @@ class DartmouthPercentAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Hospital Discharge Rates per Medicare Enrollee"),
+                u"value_thousand": 223.4,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/discharge-rate/",
@@ -333,6 +334,7 @@ class ErsAlgorithmTest(TestCase):
                 u"std_dev": 0.02308,
                 u"value_type": u"percent",
                 u"description": u"Percent of Adults that are obese",
+                u"value_thousand": 302.0,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/adult-obesity/",
@@ -373,6 +375,7 @@ class ErsAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Percent of Adults that are Diabetic"),
+                u"value_thousand": 103.0,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/adult-diabetes/",
@@ -414,6 +417,7 @@ class ErsAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Fitness and Recreation Centers per Capita"),
+                "value_thousand": 0.121,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/fitness-centers/",
@@ -456,6 +460,7 @@ class ErsAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Fast Food Restaurants per Capita"),
+                u"value_thousand": 0.861,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/fast-food/",
@@ -498,6 +503,7 @@ class ErsAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Full Service Restaurants per Capita"),
+                u"value_thousand": 0.783,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/full-rest/",
@@ -540,6 +546,7 @@ class ErsAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Farmers' Markets per Capita"),
+                u"value_thousand": 0.016,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/farmers-markets/",
@@ -582,6 +589,7 @@ class ErsAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Percent with Low Access to Groceries"),
+                u"value_thousand": 255.236,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/low-grocery/",
@@ -624,6 +632,7 @@ class ErsAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Grocery Stores per Capita"),
+                u"value_thousand": 0.133,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/groceries-per/",
@@ -666,6 +675,7 @@ class ErsAlgorithmTest(TestCase):
                 u"value_type": u"percent",
                 u"description": (
                     u"Percent of Students Qualifying for a Free Lunch"),
+                u"value_thousand": 481.355,
             },
             u'detail': {
                 u"path": u"/api/detail/tulsa-county/free-lunch/",

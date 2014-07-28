@@ -795,6 +795,44 @@ class DartmouthPercentAlgorithm(PercentAlgorithm):
     # Default boundary set order
     boundary_set_slugs = ('counties', 'states')
 
+    def score(self, source_data):
+        '''
+        Score based on the ratio vs the state ratio
+
+        For example, the metric 'Percentage on Food Stamps' comes from Census
+        table B19058.  The total households is item 1, and the count on food
+        stamps or other assistance is item 2.  The percent for any one census
+        tract is the count divided by the total.  The score is the percent of
+        census tracts across the state that have a lower percentage on food
+        stamps, which can be calculated using the cumulative distribution
+        function (CDF) with the tract's ratio, the state average, and the
+        state standard deviation.  The last two can be pre-calcuated.
+        '''
+        percent = self.local_percent(source_data)
+        avg, std_dev, better_sign = self.get_stats(source_data)
+        cdf = norm.cdf(percent, avg, std_dev)
+        if better_sign >= 0:
+            score = cdf
+        else:
+            score = 1.0 - cdf
+        return {
+            'summary': OrderedDict((
+                ("score", round(score, 3)),
+                ("value", round(percent, 3)),
+                ("average", avg),
+                ("std_dev", std_dev),
+                ("value_type", "percent"),
+                ("description", self.metric.description),
+                ("value_thousand", round(percent * 1000.0, 3))
+            )),
+            'detail': {},
+            'boundary': OrderedDict((
+                ("label", source_data.boundary.display_name),
+                ("type", source_data.boundary.kind),
+                ("external_id", source_data.boundary.external_id)
+            )),
+        }
+
     def source_data_for_boundary(self, boundary):
         '''Get data where the total population is not 0'''
         return self.cache.get_data(Dartmouth, boundary)
@@ -820,6 +858,44 @@ class ErsPercentAlgorithm(PercentAlgorithm):
     '''
     # Default boundary set order
     boundary_set_slugs = ('counties', 'states')
+
+    def score(self, source_data):
+        '''
+        Score based on the ratio vs the state ratio
+
+        For example, the metric 'Percentage on Food Stamps' comes from Census
+        table B19058.  The total households is item 1, and the count on food
+        stamps or other assistance is item 2.  The percent for any one census
+        tract is the count divided by the total.  The score is the percent of
+        census tracts across the state that have a lower percentage on food
+        stamps, which can be calculated using the cumulative distribution
+        function (CDF) with the tract's ratio, the state average, and the
+        state standard deviation.  The last two can be pre-calcuated.
+        '''
+        percent = self.local_percent(source_data)
+        avg, std_dev, better_sign = self.get_stats(source_data)
+        cdf = norm.cdf(percent, avg, std_dev)
+        if better_sign >= 0:
+            score = cdf
+        else:
+            score = 1.0 - cdf
+        return {
+            'summary': OrderedDict((
+                ("score", round(score, 3)),
+                ("value", round(percent, 3)),
+                ("average", avg),
+                ("std_dev", std_dev),
+                ("value_type", "percent"),
+                ("description", self.metric.description),
+                ("value_thousand", round(percent * 1000.0, 3))
+            )),
+            'detail': {},
+            'boundary': OrderedDict((
+                ("label", source_data.boundary.display_name),
+                ("type", source_data.boundary.kind),
+                ("external_id", source_data.boundary.external_id)
+            )),
+        }
 
     def source_data_for_boundary(self, boundary):
         '''Get data for where the total population is not 0'''
