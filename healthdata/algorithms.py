@@ -837,6 +837,102 @@ class DartmouthPercentAlgorithm(PercentAlgorithm):
         '''Get data where the total population is not 0'''
         return self.cache.get_data(Dartmouth, boundary)
 
+    def expanded_detail(self, source_data, score):
+        '''
+        Extract data from metric.params to detail
+
+        Special keys:
+        stats - not added to detail
+        more_data - List of dicts, expecting:
+            type: 'census_reporter'
+            table: A census table like B17001
+            text: Link text like 'View on CensusReporter.org'
+        '''
+        boundary = source_data.boundary
+        cr_prefix = {
+            'Census Block Group': '15000US',
+            'Census Tract': '14000US',
+            'County': '05000US',
+            'State': '04000US',
+        }
+        detail = {
+            'path': self.detail_path(source_data.boundary)
+        }
+        params = self.metric.params or {}
+        md = markdown.Markdown()
+        for key, val in params.items():
+            if key == 'stats':
+                # Handled by get_stats
+                pass
+            elif key == 'more_data':
+                detail['more_data'] = []
+                for item in val:
+                    out = item.copy()
+                    mtype = item['type']
+                    table = item['table']
+                    text = item['text']
+                    assert mtype == 'census_reporter'
+                    link_fmt = (
+                        'http://censusreporter.org/data/table/?table={table}'
+                        '&geo_ids={geo_id}&primary_geo_id={geo_id}')
+                    try:
+                        geo_id = (
+                            cr_prefix[boundary.kind] + boundary.external_id)
+                    except KeyError:
+                        geo_id = '04000US40'  # Oklahoma
+                    out['link'] = link_fmt.format(
+                        table=table, geo_id=geo_id)
+                    out['markdown'] = "[{}]({})".format(text, out['link'])
+                    out['html'] = md.convert(out['markdown'])
+                    detail['more_data'].append(out)
+            elif key == 'references':
+                detail['references'] = []
+                for item in val:
+                    out = item.copy()
+                    title = item['title']
+                    publisher = item['publisher']
+                    date = item['date']
+                    link = item['link']
+                    out['markdown'] = (
+                        "[{}]({}), {}, {}".format(
+                            title, link, publisher, date))
+                    out['html'] = md.convert(out['markdown'])
+                    detail['references'].append(out)
+            elif key == 'score_md_fmt':
+                items = {
+                    'boundary': boundary.display_name,
+                    'domain': 'Oklahoma',
+                }
+                raw_value = score['summary'].get('value')
+                raw_average = score['summary'].get('average')
+                raw_score = score['summary'].get('score')
+                raw_value_thousand = score['summary'].get('value_thousand')
+                if (raw_value is None or raw_average is None or
+                        raw_score is None):
+                    continue
+                assert score['summary']['value_type'] == 'percent'
+                items['value'] = "{:.0%}".format(raw_value)
+                items['average'] = "{:.0}".format(raw_average)
+                items['average_thousand'] = "{:.0}".format(
+                    raw_average * 1000.0)
+                items['value_thousand'] = "{:.0}".format(raw_value_thousand)
+                if raw_score >= .5:
+                    items['rel'] = 'top {:.0%}'.format(1 - raw_score)
+                else:
+                    items['rel'] = 'bottom {:.0%}'.format(raw_score)
+                out = {'markdown': val.format(**items)}
+                out['html'] = md.convert(out['markdown'])
+                detail['score_text'] = out
+            elif key == 'why_md_fmt':
+                detail['why_text'] = {
+                    'markdown': val,
+                    'html': md.convert(val),
+                }
+            else:
+                # Add everything else to detail as is
+                detail[key] = val
+        return detail
+
 
 class PercentDischargeRateAlgorithm(DartmouthPercentAlgorithm):
     '''Score based on the Discharge Rate per 1000 Medicare Enrollees'''
@@ -896,6 +992,102 @@ class ErsPercentAlgorithm(PercentAlgorithm):
                 ("external_id", source_data.boundary.external_id)
             )),
         }
+
+    def expanded_detail(self, source_data, score):
+        '''
+        Extract data from metric.params to detail
+
+        Special keys:
+        stats - not added to detail
+        more_data - List of dicts, expecting:
+            type: 'census_reporter'
+            table: A census table like B17001
+            text: Link text like 'View on CensusReporter.org'
+        '''
+        boundary = source_data.boundary
+        cr_prefix = {
+            'Census Block Group': '15000US',
+            'Census Tract': '14000US',
+            'County': '05000US',
+            'State': '04000US',
+        }
+        detail = {
+            'path': self.detail_path(source_data.boundary)
+        }
+        params = self.metric.params or {}
+        md = markdown.Markdown()
+        for key, val in params.items():
+            if key == 'stats':
+                # Handled by get_stats
+                pass
+            elif key == 'more_data':
+                detail['more_data'] = []
+                for item in val:
+                    out = item.copy()
+                    mtype = item['type']
+                    table = item['table']
+                    text = item['text']
+                    assert mtype == 'census_reporter'
+                    link_fmt = (
+                        'http://censusreporter.org/data/table/?table={table}'
+                        '&geo_ids={geo_id}&primary_geo_id={geo_id}')
+                    try:
+                        geo_id = (
+                            cr_prefix[boundary.kind] + boundary.external_id)
+                    except KeyError:
+                        geo_id = '04000US40'  # Oklahoma
+                    out['link'] = link_fmt.format(
+                        table=table, geo_id=geo_id)
+                    out['markdown'] = "[{}]({})".format(text, out['link'])
+                    out['html'] = md.convert(out['markdown'])
+                    detail['more_data'].append(out)
+            elif key == 'references':
+                detail['references'] = []
+                for item in val:
+                    out = item.copy()
+                    title = item['title']
+                    publisher = item['publisher']
+                    date = item['date']
+                    link = item['link']
+                    out['markdown'] = (
+                        "[{}]({}), {}, {}".format(
+                            title, link, publisher, date))
+                    out['html'] = md.convert(out['markdown'])
+                    detail['references'].append(out)
+            elif key == 'score_md_fmt':
+                items = {
+                    'boundary': boundary.display_name,
+                    'domain': 'Oklahoma',
+                }
+                raw_value = score['summary'].get('value')
+                raw_average = score['summary'].get('average')
+                raw_score = score['summary'].get('score')
+                raw_value_thousand = score['summary'].get('value_thousand')
+                if (raw_value is None or raw_average is None or
+                        raw_score is None):
+                    continue
+                assert score['summary']['value_type'] == 'percent'
+                items['value'] = "{:.0%}".format(raw_value)
+                items['average'] = "{:.0}".format(raw_average)
+                items['average_thousand'] = "{:.0}".format(
+                    raw_average * 1000.0)
+                items['value_thousand'] = "{:.0}".format(raw_value_thousand)
+                if raw_score >= .5:
+                    items['rel'] = 'top {:.0%}'.format(1 - raw_score)
+                else:
+                    items['rel'] = 'bottom {:.0%}'.format(raw_score)
+                out = {'markdown': val.format(**items)}
+                out['html'] = md.convert(out['markdown'])
+                detail['score_text'] = out
+            elif key == 'why_md_fmt':
+                detail['why_text'] = {
+                    'markdown': val,
+                    'html': md.convert(val),
+                }
+            else:
+                # Add everything else to detail as is
+                detail[key] = val
+        return detail
 
     def source_data_for_boundary(self, boundary):
         '''Get data for where the total population is not 0'''
