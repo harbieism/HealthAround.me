@@ -15,7 +15,7 @@ def fast_food_db_importer():
     path = 'data/fast_food/fast_food_lat_lon_ok.csv'
     reader = csv.reader(file(path))
     count = 0
-    for lat, lng  in reader:
+    for lat, lng in reader:
         float_lat = float(lat)
         float_lng = float(lng)
         new_pnt = Point(float_lng, float_lat)
@@ -23,4 +23,3 @@ def fast_food_db_importer():
         new_fast_food_location.save()
         count += 1
     logger.info("Imported {} fast food locations".format(count))
-
