@@ -24,4 +24,4 @@ class FastFoodAdmin(admin.ModelAdmin):
 admin.site.register(Census, CensusAdmin)
 admin.site.register(Dartmouth, DartmouthAdmin)
 admin.site.register(Ers, ErsAdmin)
-admin.site.register(FastFood, FastFOodAdmin)
+admin.site.register(FastFood, FastFoodAdmin)
