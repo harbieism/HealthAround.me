@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Census, Dartmouth, Ers
+from .models import Census, Dartmouth, Ers, FastFood
 
 
 class CensusAdmin(admin.ModelAdmin):
@@ -17,6 +17,11 @@ class ErsAdmin(admin.ModelAdmin):
     list_display = ('boundary', )
     raw_id_fields = ('boundary', )
 
+class FastFoodAdmin(admin.ModelAdmin):
+	list_display = ('pnt', )
+	raw_id_fields = ('pnt', )
+
 admin.site.register(Census, CensusAdmin)
 admin.site.register(Dartmouth, DartmouthAdmin)
 admin.site.register(Ers, ErsAdmin)
+admin.site.register(FastFood, FastFOodAdmin)
