@@ -54,5 +54,6 @@ class APITestCase(TestCaseCommonMixin, BaseAPITestCase):
         self.assertEqual(response.status_code, 200, response.content)
         self.assertOrderedDictEqual(expected, response.data)
 
+
 class TestCase(TestCaseCommonMixin, BaseTestCase):
     assertScoreEqual = TestCaseCommonMixin.assertOrderedDictEqual

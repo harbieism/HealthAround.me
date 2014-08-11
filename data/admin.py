@@ -17,9 +17,10 @@ class ErsAdmin(admin.ModelAdmin):
     list_display = ('boundary', )
     raw_id_fields = ('boundary', )
 
+
 class FastFoodAdmin(admin.ModelAdmin):
-	list_display = ('pnt', )
-	raw_id_fields = ('pnt', )
+    list_display = ('pnt', )
+    raw_id_fields = ('pnt', )
 
 admin.site.register(Census, CensusAdmin)
 admin.site.register(Dartmouth, DartmouthAdmin)
