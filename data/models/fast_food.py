@@ -8,5 +8,6 @@ class FastFood(models.Model):
         verbose_name_plural = "fast-food"
         app_label = "data"
 
-    pnt = models.PointField()
+    pnt = models.PointField(srid=4269)
     loader_id = models.IntegerField()
+    objects = models.GeoManager()
