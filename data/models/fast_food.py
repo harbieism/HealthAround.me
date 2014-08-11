@@ -9,3 +9,4 @@ class FastFood(models.Model):
         app_label = "data"
 
     pnt = models.PointField()
+    loader_id = models.IntegerField()
