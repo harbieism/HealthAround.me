@@ -9,5 +9,5 @@ class FastFood(models.Model):
         app_label = "data"
 
     pnt = models.PointField(srid=4269)
-    loader_id = models.IntegerField()
+    loader_id = models.IntegerField(default=0)
     objects = models.GeoManager()
