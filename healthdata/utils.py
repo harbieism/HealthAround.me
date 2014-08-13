@@ -633,3 +633,8 @@ def get_field_for_area_percent(area_to_get, field_to_get, klass):
 
 def round_div_float(float_num, divide_by):
     return ceil(float_num * 10000) / (10000.0 * divide_by)
+
+
+def get_points_in_shape(shape, point_data):
+    points = point_data.objects.filter(pnt__within=shape)
+    return points
