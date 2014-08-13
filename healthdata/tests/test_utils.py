@@ -1,14 +1,15 @@
 '''Tests for healthdata/utils.py'''
 from django.test import TestCase
 from boundaryservice.models import Boundary, BoundarySet
-from data.models import Census, Dartmouth
+from data.models import Census, Dartmouth, FastFood
 from django.contrib.gis.geos import GEOSGeometry
 
 from healthdata.utils import (
     fake_boundary,
     get_field_for_area,
     get_field_for_area_percent,
-    highest_resolution_for_data
+    highest_resolution_for_data,
+    get_points_in_shape
 )
 
 
@@ -43,6 +44,38 @@ class FakeBoundaryUtilTest(TestCase):
             (-95.99, 36.149), (-95.991, 36.149)),),)
         self.assertEqual(expected_shape, boundary.shape.coords)
         self.assertEqual((-95.9905, 36.1495), boundary.centroid.coords)
+
+
+class GetPointsInShapeTest(TestCase):
+    def setUp(self):
+        self.bound_one_shape = GEOSGeometry(
+            'MULTIPOLYGON((('
+            '-95.5 36.0, -95.5 36.5, -95.0 36.5,'
+            '-95.0 36.0, -95.5 36.0)))'
+        )
+
+        self.bound_two_shape = GEOSGeometry(
+            'MULTIPOLYGON((('
+            '-93.5 36.0, -93.5 36.5, -93.0 36.5,'
+            '-93.0 36.0, -93.5 36.0)))'
+        )
+
+    def test_get_points_in_shape_points(self):
+        point_one = GEOSGeometry('POINT(-95.25 36.25)')
+        point_two = GEOSGeometry('POINT(-95.15 36.15)')
+        fast_food_one = FastFood.objects.create(pnt=point_one)
+        fast_food_two = FastFood.objects.create(pnt=point_two)
+        list_of_points = [fast_food_two, fast_food_one]
+        self.assertEqual(
+            set(get_points_in_shape(self.bound_one_shape, FastFood)),
+            set(list_of_points)
+        )
+
+    def test_get_points_in_shape_no_points(self):
+        self.assertEqual(
+            get_points_in_shape(self.bound_two_shape, FastFood),
+            []
+        )
 
 
 class ForAreaTestNoData(TestCase):
