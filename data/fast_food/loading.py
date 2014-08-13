@@ -20,8 +20,8 @@ def fast_food_db_importer():
         float_lng = float(lng)
         new_pnt = Point(float_lng, float_lat)
         new_fast_food_location, created = FastFood.objects.get_or_create(
-        	pnt=new_pnt,
-        	loader_id=count
+            pnt=new_pnt,
+            loader_id=count
         )
         new_fast_food_location.save()
         count += 1
