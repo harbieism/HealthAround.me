@@ -73,8 +73,8 @@ class GetPointsInShapeTest(TestCase):
 
     def test_get_points_in_shape_no_points(self):
         self.assertEqual(
-            get_points_in_shape(self.bound_two_shape, FastFood),
-            []
+            set(get_points_in_shape(self.bound_two_shape, FastFood)),
+            set([])
         )
 
 
