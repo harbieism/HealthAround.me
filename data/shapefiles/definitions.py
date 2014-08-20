@@ -71,4 +71,20 @@ SHAPEFILES = {
         'srid': '',
         'simplification': 0.0001,
     },
+    'Oklahoma School Districts': {
+        'file': 'SDTAX.zip',
+        'singular': 'School District',
+        'kind_first': False,
+        'ider': utils.simple_namer(['SD_CODE']),
+        'namer': utils.simple_namer(['SD_NAME']),
+        'authority': 'Oklahoma Deparment of Education',
+        'domain': 'United States of America',
+        'last_updated': date(2013, 4, 8),
+        'href': (
+            'geo.ou.edu/oeb/Statewide/SDTAX.zip'),
+        'notes': '',
+        'encoding': '',
+        'srid': '',
+        'simplification': 0.0001,
+    },
 }
